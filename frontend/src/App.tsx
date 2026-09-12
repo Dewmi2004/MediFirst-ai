@@ -1,12 +1,14 @@
+import { AppLayout } from "@/components/layout/AppLayout";
+
 function App() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-      <h1 className="text-2xl font-semibold">MediFirst AI</h1>
+    <AppLayout>
+      <h1 className="text-2xl font-semibold">Welcome</h1>
       <p className="mt-2 max-w-md text-sm text-gray-600 dark:text-gray-400">
-        AI-assisted health information and education. Not a substitute for
-        professional medical advice.
+        This is a placeholder dashboard. Real pages and routing are added in
+        the next parts.
       </p>
-    </div>
+    </AppLayout>
   );
 }
 
