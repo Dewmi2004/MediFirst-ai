@@ -1,23 +1,18 @@
-# MediFirst AI — Parts 01-11 (Full)
+# MediFirst AI — Parts 01-12 (Full)
 
 Phase 1 (Planning & Architecture, Parts 01-10) documentation, plus Part 11
-(React Project Setup) — the first runnable code.
+(React Project Setup) and Part 12 (Tailwind Setup).
 
-docs/requirements/part-01-project-requirements.md
-docs/architecture/part-02-system-architecture.md
-docs/architecture/part-03-technology-stack.md
-docs/architecture/part-04-repository-structure.md
-docs/architecture/part-05-environment-configuration.md
-docs/architecture/part-06-git-strategy.md
-docs/architecture/part-07-api-architecture.md
-docs/architecture/part-08-database-architecture.md
-docs/architecture/part-09-ai-architecture.md
-docs/security/part-10-threat-model.md
-
-frontend/ — Part 11: React + TypeScript + Vite project (no Tailwind or
-layout yet — those are Parts 12 and 13).
+docs/ — Parts 01-10 planning and architecture documents
+frontend/ — cumulative, runnable project through Part 12 (React + TS + Vite + Tailwind)
 
 Run:
     cd frontend
     npm install
     npm run dev
+
+Git commit for this part is in COMMIT_MESSAGE.txt. Suggested commands:
+
+    git checkout -b part/12-tailwind-setup
+    git add frontend/
+    git commit -F COMMIT_MESSAGE.txt
