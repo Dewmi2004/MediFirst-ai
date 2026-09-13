@@ -2,8 +2,7 @@
 
 **AI-assisted health information, first-aid guidance, symptom risk education, and medicine information — delivered as a secure, multi-tenant SaaS platform.**
 
-> **MediFirst AI is not a doctor, hospital, pharmacist, or emergency service.** It is an AI-assisted health information and education platform. It does not diagnose disease, prescribe medication, or replace professional medical care. If you are experiencing a medical emergency, contact your local emergency services immediately.
-
+>  **MediFirst AI is not a doctor, hospital, pharmacist, or emergency service.** It is an AI-assisted health information and education platform. It does not diagnose disease, prescribe medication, or replace professional medical care. If you are experiencing a medical emergency, contact your local emergency services immediately.
 ---
 
 ## Table of Contents
@@ -17,7 +16,7 @@
 - [SaaS Model](#saas-model)
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
-- [Development Roadmap](#development-roadmap)
+- [Roadmap](#roadmap)
 - [Security & Privacy](#security--privacy)
 - [Medical Safety Design](#medical-safety-design)
 - [Testing](#testing)
@@ -62,7 +61,7 @@ The single non-negotiable rule of the whole system:
 | **Medicine Information** | Searchable database of generic/brand names, uses, warnings, and source provenance |
 | **Medicine Image Identification** | Photo-based identification *assistance* with confidence scoring and mandatory pharmacist-verification guidance |
 | **Organizations & Teams** | Multi-seat organization accounts with centralized billing and least-privilege admin access |
-| **Subscription Plans** | FREE / STARTER / PRO / TEAM / ENTERPRISE tiers, entitlement-based feature gating that never touches safety features |
+| **Subscription Plans** | Tiered plans with entitlement-based feature gating that never touches safety features |
 | **Admin Console** | Source/content approval, safety event review, user and role management, aggregate billing health |
 
 ## Technology Stack
@@ -71,12 +70,12 @@ The single non-negotiable rule of the whole system:
 |---|---|
 | Frontend | React 18, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query, React Hook Form, Zod |
 | Backend | Node.js, Express, TypeScript, Zod, JWT/session auth, Argon2/bcrypt, Helmet, CORS, rate limiting |
-| Database | PostgreSQL, pgvector (vector search), Prisma ORM |
-| AI | Provider-agnostic `AIService` abstraction (OpenAI, other providers, or local models) |
-| Payments | Stripe behind a `PaymentService` abstraction |
+| Database | PostgreSQL, pgvector (vector search), Prisma ORM — self-hosted, no paid managed database |
+| AI | Ollama, running an open-source local model, behind a provider-agnostic `AIService` abstraction |
+| Payments | PayHere behind a `PaymentService` abstraction — sandbox mode only, for academic demonstration; no real transactions |
 | Testing | Vitest/Jest, Supertest, Playwright |
 
-The application is never tightly coupled to a single AI or payment vendor — both sit behind swappable provider interfaces.
+All infrastructure is free and self-hostable: no paid cloud AI APIs, no paid database/hosting tiers, and no live payment processing. The provider abstractions (`AIService`, `PaymentService`) exist so a paid provider could be swapped in later, but none is required to run or demonstrate the project.
 
 ## Architecture Overview
 
@@ -141,11 +140,11 @@ medifirst-ai/
 
 | Plan (illustrative) | Notes |
 |---|---|
-| FREE | Limited AI messages/month. First-aid, symptom risk tools, and all emergency/safety behavior fully available |
-| STARTER | Higher AI quota, medicine ID included with a monthly cap |
-| PRO | Higher/near-unlimited quotas, priority support |
-| TEAM | Organization seats, shared billing, usage analytics |
-| ENTERPRISE | Custom quotas, custom terms, dedicated support |
+| Free | Limited AI messages/month. First-aid, symptom risk tools, and all emergency/safety behavior fully available |
+| Starter | Higher AI quota, medicine ID included with a monthly cap |
+| Pro | Higher/near-unlimited quotas, priority support |
+| Team | Organization seats, shared billing, usage analytics |
+| Enterprise | Custom quotas, custom terms, dedicated support |
 
 Feature access is resolved through a single **Entitlement Service**, never scattered plan checks — and safety-critical features are hardcoded to always be available regardless of plan.
 
@@ -154,6 +153,7 @@ Feature access is resolved through a single **Entitlement Service**, never scatt
 ### Prerequisites
 - Node.js 18+
 - PostgreSQL 15+ with the `pgvector` extension
+- [Ollama](https://ollama.com) installed locally, with a model pulled (e.g. `ollama pull llama3`)
 - npm
 
 ### Frontend
@@ -167,7 +167,6 @@ npm run dev
 App runs at `http://localhost:5173`.
 
 ### Backend
-*(Available starting Part 21 of the development roadmap.)*
 
 ```bash
 cd backend
@@ -186,10 +185,12 @@ PORT=4000
 DATABASE_URL=postgresql://user:password@localhost:5432/medifirst
 JWT_SECRET=
 SESSION_SECRET=
-AI_PROVIDER=openai
-AI_PROVIDER_API_KEY=
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
+AI_PROVIDER=ollama
+AI_PROVIDER_BASE_URL=http://localhost:11434
+AI_PROVIDER_MODEL=llama3
+PAYHERE_MERCHANT_ID=
+PAYHERE_MERCHANT_SECRET=
+PAYHERE_MODE=sandbox
 LOG_LEVEL=info
 ```
 
@@ -198,25 +199,19 @@ LOG_LEVEL=info
 VITE_API_BASE_URL=http://localhost:4000/api/v1
 ```
 
-## Development Roadmap
+## Roadmap
 
-The project is built sequentially across **110 parts**, one part at a time, each leaving the system in a working, testable state.
-
-| Phase | Parts | Status |
-|---|---|---|
-| 1 — Planning & Architecture | 01–10 | ✅ Complete |
-| 2 — Frontend Foundation | 11–20 | 🔄 In progress (through Part 14) |
-| 3 — Backend Foundation & Authentication | 21–30 | ⏳ Not started |
-| 4 — Database & User Management | 31–40 | ⏳ Not started |
-| 5 — Safety Controller | 41–50 | ⏳ Not started |
-| 6 — First-Aid Assistant | 51–60 | ⏳ Not started |
-| 7 — Symptom Risk Guidance | 61–70 | ⏳ Not started |
-| 8 — Medicine System | 71–80 | ⏳ Not started |
-| 9 — AI + RAG Architecture | 81–90 | ⏳ Not started |
-| 10 — Security, Privacy & Production | 91–100 | ⏳ Not started |
-| 11 — SaaS, Billing & Multi-Tenancy | 101–110 | ⏳ Not started |
-
-See [`docs/`](./docs/) for the completed parts' full specifications.
+- Planning & architecture — functional/non-functional requirements, system design, technology stack, repository conventions, API and database design, AI architecture, and the security threat model
+- Frontend foundation — React application shell, styling system, routing, UI design system, accessibility baseline, API client, state management, and error/loading handling
+- Backend foundation & authentication — Express API, global error handling, request validation, registration, login, session/token security, and role-based access control
+- Database & user management — PostgreSQL schema, user profiles, account settings, data retention policy, account deletion, and audit logging
+- Safety controller — emergency detection, emergency response templates, risk classification, unsafe-request detection, medication safety rules, diagnosis-safety guardrails, and AI response validation
+- First-aid assistant — structured guidance for cuts, burns, bleeding, sprains, choking, and allergic reactions, plus the first-aid browsing UI
+- Symptom risk guidance — symptom input, validation, the rule-based risk engine, emergency symptom detection, risk explanations, and follow-up questioning
+- Medicine system — medicine database, search, image upload and processing, image-based identification, confidence/uncertainty display, and pharmacist-verification guidance
+- AI + RAG architecture — AI provider abstraction, prompt architecture, vector database, document ingestion and chunking, embeddings, similarity search, and citation/provenance display
+- Security, privacy & production hardening — API and file security, privacy architecture, security and AI safety audits, automated testing, deployment, and documentation
+- SaaS, billing & multi-tenancy — organization/tenant support, subscription plans and entitlements, payment provider integration, billing webhooks, usage metering, pricing and checkout, billing settings, trial/grace-period logic, and the organization admin dashboard
 
 ## Security & Privacy
 
@@ -226,7 +221,7 @@ See [`docs/`](./docs/) for the completed parts' full specifications.
 - Privacy-by-design: minimal data collection, configurable retention, user-controlled deletion
 - Organization admins never get automatic access to members' private health conversations — only billing, seats, and aggregate usage
 - No sensitive medical or payment data is logged; structured logs use `requestId`, `route`, `statusCode`, `duration`, `userId` only
-- Full threat model: [`docs/security/part-10-threat-model.md`](./docs/security/part-10-threat-model.md)
+- Full threat model: [`docs/security/threat-model.md`](./docs/security/threat-model.md)
 
 ## Medical Safety Design
 
@@ -249,17 +244,19 @@ See [`docs/`](./docs/) for the completed parts' full specifications.
 
 | Document | Path |
 |---|---|
-| Project Requirements | `docs/requirements/part-01-project-requirements.md` |
-| System Architecture | `docs/architecture/part-02-system-architecture.md` |
-| Technology Stack | `docs/architecture/part-03-technology-stack.md` |
-| Repository Structure | `docs/architecture/part-04-repository-structure.md` |
-| Environment Configuration | `docs/architecture/part-05-environment-configuration.md` |
-| Git Strategy | `docs/architecture/part-06-git-strategy.md` |
-| API Architecture | `docs/architecture/part-07-api-architecture.md` |
-| Database Architecture | `docs/architecture/part-08-database-architecture.md` |
-| AI Architecture | `docs/architecture/part-09-ai-architecture.md` |
-| Security & Threat Model | `docs/security/part-10-threat-model.md` |
+| Project Requirements | `docs/requirements/project-requirements.md` |
+| System Architecture | `docs/architecture/system-architecture.md` |
+| Technology Stack | `docs/architecture/technology-stack.md` |
+| Repository Structure | `docs/architecture/repository-structure.md` |
+| Environment Configuration | `docs/architecture/environment-configuration.md` |
+| Git Strategy | `docs/architecture/git-strategy.md` |
+| API Architecture | `docs/architecture/api-architecture.md` |
+| Database Architecture | `docs/architecture/database-schema.md` |
+| AI Architecture | `docs/architecture/ai-rag-architecture.md` |
+| Security & Threat Model | `docs/security/threat-model.md` |
 
 ## Disclaimer
 
 MediFirst AI is presented as an **AI-assisted health information and educational platform**, offered as a subscription service. It is **not** marketed as an AI doctor, an autonomous diagnostic system, or a replacement for healthcare professionals, unless and until it undergoes the clinical validation, regulatory assessment, and professional oversight such claims would require. Paid subscription tiers unlock convenience and capacity — never a higher standard of medical safety, which is guaranteed equally to every user.
+
+This project is developed for academic purposes using free and open-source tools throughout (self-hosted PostgreSQL, a locally run Ollama model, and a payment integration kept in sandbox/demo mode). No paid cloud services or paid deployment infrastructure are required to build, run, or evaluate it.
