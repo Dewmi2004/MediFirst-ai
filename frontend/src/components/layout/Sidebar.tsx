@@ -1,9 +1,11 @@
+import { NavLink } from "react-router-dom";
+
 const links = [
-  { label: "Dashboard", href: "#" },
-  { label: "Chat", href: "#" },
-  { label: "First Aid", href: "#" },
-  { label: "Symptoms", href: "#" },
-  { label: "Medicines", href: "#" },
+  { label: "Dashboard", to: "/dashboard" },
+  { label: "Chat", to: "/chat" },
+  { label: "First Aid", to: "/first-aid" },
+  { label: "Symptoms", to: "/symptoms" },
+  { label: "Medicines", to: "/medicines" },
 ];
 
 export function Sidebar() {
@@ -15,12 +17,16 @@ export function Sidebar() {
       <ul className="space-y-1">
         {links.map((link) => (
           <li key={link.label}>
-            <a
-              href={link.href}
-              className="block rounded px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-info"
+            <NavLink
+              to={link.to}
+              className={({ isActive }) =>
+                `block rounded px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-info ${
+                  isActive ? "bg-gray-100 dark:bg-gray-800 font-medium" : ""
+                }`
+              }
             >
               {link.label}
-            </a>
+            </NavLink>
           </li>
         ))}
       </ul>
