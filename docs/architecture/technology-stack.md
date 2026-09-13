@@ -1,4 +1,4 @@
-# PART 03 — Technology Stack
+# Technology Stack
 
 | Layer | Technology | Justification |
 |---|---|---|

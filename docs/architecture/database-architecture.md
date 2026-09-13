@@ -1,4 +1,4 @@
-# PART 08 — Database Architecture
+# Database Architecture
 
 -- Identity & Org
 users (id, email, password_hash, role, created_at, ...)

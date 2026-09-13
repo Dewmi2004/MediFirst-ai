@@ -1,4 +1,4 @@
-# PART 07 — API Architecture
+# API Architecture
 
 ## Layering
 Route -> Middleware (auth, validation, rate limit) -> Controller -> Service -> Data layer (Prisma)

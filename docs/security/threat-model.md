@@ -1,4 +1,4 @@
-# PART 10 — Security & Threat Model
+# Security & Threat Model
 
 | Threat Category | Example | Primary Mitigation (Part) |
 |---|---|---|

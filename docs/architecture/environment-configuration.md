@@ -1,4 +1,4 @@
-# PART 05 — Environment Configuration
+# Environment Configuration
 
 ## backend/.env.example
 NODE_ENV=development
@@ -8,8 +8,8 @@ JWT_SECRET=replace_with_a_long_random_value
 SESSION_SECRET=replace_with_a_long_random_value
 AI_PROVIDER=openai
 AI_PROVIDER_API_KEY=replace_with_real_key
-STRIPE_SECRET_KEY=replace_with_real_key
-STRIPE_WEBHOOK_SECRET=replace_with_real_key
+PAYHERE_SECRET_KEY=replace_with_real_key
+PAYHERE_WEBHOOK_SECRET=replace_with_real_key
 LOG_LEVEL=info
 
 ## frontend/.env.example

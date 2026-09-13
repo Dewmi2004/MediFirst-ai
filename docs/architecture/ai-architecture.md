@@ -1,4 +1,4 @@
-# PART 09 — AI Architecture
+# AI Architecture
 
 User Question
   -> Input Validation

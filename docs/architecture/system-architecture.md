@@ -1,4 +1,4 @@
-# PART 02 — System Architecture
+# System Architecture
 
 ## Module List
 Auth, Organizations, Billing, Entitlement Service, Safety, AI, RAG, First Aid, Symptoms, Medicines, Admin.

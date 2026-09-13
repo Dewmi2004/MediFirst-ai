@@ -1,4 +1,4 @@
-# PART 04 — Repository Structure
+# Repository Structure
 
 medifirst-ai/
 ├── frontend/
